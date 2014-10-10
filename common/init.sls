@@ -1,11 +1,22 @@
 # vim: sts=2 ts=2 sw=2 et ai
 
-{% for groups, packages in salt['pillar.get']('packages', {}).items() %}
+{% for section in salt['pillar.get']('common', {}).items() %}
+{% if section == 'includes' %}
+{% for include in section.items() %}
+include:
+{% if include %}
+  {{ include }}
+{% endif %}
+{% endfor %}
+{% else %}
+{% for groups, packages in section.items() %}
 {% for package in packages %}
 {% if package %}
 {{ package }}:
   pkg.installed
 {% endif %}
-{% endfor %}
-{% endfor %}
+{% endfor %} {# packages #}
+{% endfor %} {# groups #}
+{% endif %}
+{% endfor %} {# sections #}
 
