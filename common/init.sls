@@ -2,14 +2,14 @@
 
 {% for section in salt['pillar.get']('common', {}).items() %}
 {% if section == 'includes' %}
-{% for include in section.items() %}
+{% for include in section %}
 include:
 {% if include %}
   {{ include }}
 {% endif %}
 {% endfor %}
 {% else %}
-{% for groups, packages in section.items() %}
+{% for groups, packages in section %}
 {% for package in packages %}
 {% if package %}
 {{ package }}:
