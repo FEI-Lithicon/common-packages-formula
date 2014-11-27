@@ -9,10 +9,10 @@ include:
 {% endif %}
 {% for groups, packages in salt['pillar.get']('common:packages', {}).items() %}
 {% set counter = loop.index0 %}
-{% for package in packages %}
-common--{{ counter }}-{{ loop.index0 }}:
+common-packages-{{ groups }}:
   pkg.installed:
-    - name: {{ package }}
+    - pkgs:
+{% for package in packages %}
+      - {{ package }}
 {% endfor %} {# packages #}
 {% endfor %} {# groups #}
-
