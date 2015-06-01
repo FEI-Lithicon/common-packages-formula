@@ -17,8 +17,17 @@ common-removed:
 {% endfor %}
 {% endif %}
 
+{% if salt['pillar.get']('common:held', {}) %}
+{% for package in salt['pillar.get']('common:held', {}) %}
+common-held-{{ package }}:
+  pkg.installed:
+    - name: {{ package }}
+    - hold: True
+{% endfor %}
+{% endif %}
+
+
 {% for groups, packages in salt['pillar.get']('common:packages', {}).items() %}
-{% set counter = loop.index0 %}
 common-packages-{{ groups }}:
   pkg.installed:
     - pkgs:
